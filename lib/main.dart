@@ -6,7 +6,7 @@ import 'package:test_calendar/views/calendar_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-    runApp(const TestCalendar());
+    runApp( const TestCalendar());
   });
 }
 
@@ -21,7 +21,7 @@ class TestCalendar extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const CalendarView(),
+        home:  const CalendarView(),
       ),
     );
   }

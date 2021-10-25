@@ -6,7 +6,6 @@ import 'package:test_calendar/models/event.dart';
 const _daysInMonth = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 class CalendarUtils {
-  var dayOfWeek = 0;
 
   int numDaysInMonth(int year, int month) =>
       (month == DateTime.february && isLeapYear(year)) ? 29 : _daysInMonth[month];

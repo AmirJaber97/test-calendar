@@ -11,48 +11,53 @@ class CalendarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BaseWidget<CalendarViewModel>(
-        viewModel: CalendarViewModel(),
-        onViewModelReady: (calendarVM) => calendarVM.testCalendar(),
-        builder: (ctx, calendarVM, _) {
-          return Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                        ),
-                      ],
+    return SafeArea(
+      child: Scaffold(
+        body: BaseWidget<CalendarViewModel>(
+          viewModel: CalendarViewModel(),
+          onViewModelReady: (calendarVM) => calendarVM.testCalendar(),
+          builder: (ctx, calendarVM, _) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom:16.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                          ),
+                        ],
+                      ),
+                      height: ScreenUtil().screenHeight / 2.2,
+                      child: Center(
+                          child: Text(
+                        calendarVM.selectedDay?.event ?? '',
+                        style: robotoStyle(color: kWhiteColor),
+                      )),
                     ),
-                    height: ScreenUtil().screenHeight / 2.2,
-                    child: Center(
-                        child: Text(
-                      calendarVM.selectedDay?.event ?? '',
-                      style: robotoStyle(color: kWhiteColor),
-                    )),
                   ),
-                ),
-                CurrentMonthCalendar(
-                    lastMonthDays: calendarVM.endingDaysOfLastMonth,
-                    nextMonthDays: calendarVM.startingDaysOfNextMonth,
-                    days: calendarVM.days,
-                    onDateSelected: (day) {
-                      calendarVM.setDay(day);
-                    }),
-              ],
-            ),
-          );
-        },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal:24.0),
+                    child: CurrentMonthCalendar(
+                        lastMonthDays: calendarVM.endingDaysOfLastMonth,
+                        nextMonthDays: calendarVM.startingDaysOfNextMonth,
+                        days: calendarVM.days,
+                        onDateSelected: (day) {
+                          calendarVM.setDay(day);
+                        }),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

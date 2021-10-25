@@ -18,7 +18,6 @@ class CalendarViewModel extends BaseProvider {
   late int year, month, day;
   late int numberOfDays;
 
-  int thisWeekNum = 1;
   int weekNum = 1;
   List<int> daysOfMonth = [];
   List<Day> days = [];
@@ -56,15 +55,11 @@ class CalendarViewModel extends BaseProvider {
     }
 
     weeks.forEachIndex((currentWeek, index) {
-      for (var dayObj in currentWeek) {
-        if (dayObj.dayNumber == day) {
-          week = currentWeek;
-          thisWeekNum = index + 1;
-          weekNum = index + 1;
-        }
-      }
+      week = currentWeek;
+      weekNum = index + 1;
     });
-    if ((weekNum == weeks.length) && (week.length < 7)) {
+
+    if ((weekNum == weeks.length)) {
       nextMonthDays(month, year, events);
     }
   }
@@ -85,14 +80,14 @@ class CalendarViewModel extends BaseProvider {
     numberOfLastMonthDays = _calendarUtils.numDaysInMonth(lastYear, lastMonth);
     daysOfLastMonth = List<int>.generate(numberOfLastMonthDays, (i) => i + 1);
     lastMonthDays = _calendarUtils.getDaysOfMonth(lastMonth, lastYear, daysOfLastMonth, events);
-    endingDaysOfLastMonth.addAll(lastMonthDays.sublist(numberOfLastMonthDays - days.first.dateTime.weekday + 1));
+    endingDaysOfLastMonth.addAll(lastMonthDays.sublist(numberOfLastMonthDays - days.first.dateTime.weekday));
   }
 
   void nextMonthDays(int month, int year, List<Event> events) {
-    var numberOfNextMonthDays;
-    var daysOfNextMonth;
-    var nextMonth;
-    var nextYear;
+    int numberOfNextMonthDays;
+    List<int> daysOfNextMonth;
+    int nextMonth;
+    int nextYear;
     List<Day> nextMonthDays = [];
     if (month == 12) {
       nextYear = year + 1;
@@ -105,21 +100,5 @@ class CalendarViewModel extends BaseProvider {
     daysOfNextMonth = List<int>.generate(numberOfNextMonthDays, (i) => i + 1);
     nextMonthDays = _calendarUtils.getDaysOfMonth(nextMonth, nextYear, daysOfNextMonth, events);
     startingDaysOfNextMonth.addAll(nextMonthDays.sublist(0, 7 - week.length));
-  }
-
-  bool isLastMonth() {
-    return month == _today.month && year == _today.year;
-  }
-
-  bool isLastWeek() {
-    bool isLastWeek = false;
-    if (isLastMonth()) {
-      for (var day in week) {
-        if (day.dayNumber == this._today.day) {
-          isLastWeek = true;
-        }
-      }
-    }
-    return isLastWeek;
   }
 }

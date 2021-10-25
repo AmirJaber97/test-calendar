@@ -52,16 +52,16 @@ class CurrentMonthCalendar extends StatelessWidget {
           primary: false,
           crossAxisCount: 7,
           children: [
-            if (lastMonthDays.isNotEmpty) ...lastMonthDays.map((e) => _dateWidget(e)).toList(),
+            if (lastMonthDays.isNotEmpty) ...lastMonthDays.map((e) => _dateWidget(e, outOfBound: true)).toList(),
             if (days.isNotEmpty) ...days.map((e) => _dateWidget(e)).toList(),
-            if (nextMonthDays.isNotEmpty) ...nextMonthDays.map((e) => _dateWidget(e)).toList()
+            if (nextMonthDays.isNotEmpty) ...nextMonthDays.map((e) => _dateWidget(e, outOfBound: true)).toList()
           ],
         ),
       ],
     );
   }
 
-  Widget _dateWidget(Day day) {
+  Widget _dateWidget(Day day, {bool outOfBound = false}) {
     return Consumer<CalendarViewModel>(builder: (ctx, calendarVM, _) {
       bool selectedDay = calendarVM.selectedDay == day;
       return GestureDetector(
@@ -76,7 +76,12 @@ class CurrentMonthCalendar extends StatelessWidget {
                 child: Center(
                     child: Text(
                   '${day.dateTime.day}',
-                  style: robotoStyle(color: selectedDay ? kWhiteColor : kBlackColor),
+                  style: robotoStyle(
+                      color: selectedDay
+                          ? kWhiteColor
+                          : outOfBound
+                              ? kGreyColor
+                              : kBlackColor),
                 ))),
             day.event != null
                 ? Positioned(
